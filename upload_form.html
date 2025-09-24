@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .upload-form {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>File Upload Test</h1>
+    <div class="upload-form">
+        <form action="http://127.0.0.1:5000/upload" method="post" enctype="multipart/form-data">
+            <p>Select a file to upload:</p>
+            <input type="file" name="file" required>
+            <br><br>
+            <input type="submit" value="Upload File">
+        </form>
+    </div>
+    
+    <h2>Instructions:</h2>
+    <ul>
+        <li>Click "Choose File" to select the protected_file.txt</li>
+        <li>Click "Upload File" to submit</li>
+        <li>The file will be uploaded to the Flask app</li>
+    </ul>
+</body>
+</html>

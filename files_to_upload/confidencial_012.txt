@@ -1,0 +1,22 @@
+Confidential Document 012
+
+Date: 2023-02-14
+
+This document contains highly sensitive data related to the company's financial records and employee information.
+
+Do not share or disclose any information contained in this document to anyone without explicit permission from the management.
+
+Employee Information:
+
+Name: John Doe
+Employee ID: 123456
+Salary: $100,000
+SSN: 123-45-6789
+
+Financial Information:
+
+Company Bank Account: 1234567890
+Company Credit Card: 9876-5432-1098-7654
+
+Keep this document in a secure location and do not leave it unattended. Breaches of confidentiality may result in disciplinary actions.
+

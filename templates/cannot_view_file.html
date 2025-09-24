@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cannot View File</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 600px; 
+            margin: 50px auto; 
+            padding: 20px; 
+        }
+        .info-container {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .back-link { 
+            color: #666; 
+            margin-top: 20px; 
+            display: inline-block; 
+        }
+    </style>
+</head>
+<body>
+    <div class="info-container">
+        <h1>Cannot view this file type</h1>
+        <p>File: <strong>{{ filename }}</strong></p>
+        <p>Only .txt files can be viewed directly.</p>
+    </div>
+    <a href="/list-files" class="back-link">← Back to Files</a>
+</body>
+</html>

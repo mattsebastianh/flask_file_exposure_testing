@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 600px; 
+            margin: 50px auto; 
+            padding: 20px;
+            text-align: center;
+        }
+        .error-container {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .back-link { 
+            color: #666; 
+            margin-top: 20px; 
+            display: inline-block; 
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>{{ error_title }}</h1>
+        <p>{{ error_message }}</p>
+    </div>
+    <a href="{{ back_url }}" class="back-link">← {{ back_text }}</a>
+</body>
+</html>

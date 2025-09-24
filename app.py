@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory, request, session, redirect, url_for, flash, abort
+from flask import Flask, send_from_directory, request, session, redirect, url_for, flash, abort, render_template
 import os
 import secrets
 from werkzeug.utils import secure_filename
@@ -61,97 +61,7 @@ def login():
         else:
             flash('Invalid credentials!', 'error')
     
-    return '''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>🔐 Secure Login</title>
-        <style>
-            body { 
-                font-family: Arial, sans-serif; 
-                max-width: 450px; 
-                margin: 80px auto; 
-                padding: 20px; 
-                background-color: #f5f5f5;
-            }
-            .login-form { 
-                background: white; 
-                padding: 30px; 
-                border-radius: 8px; 
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-            h1 { 
-                text-align: center; 
-                color: #333; 
-                margin-bottom: 20px;
-            }
-            .credentials-note {
-                background: #fff3cd;
-                border: 1px solid #ffeaa7;
-                padding: 15px;
-                border-radius: 5px;
-                margin: 20px 0;
-                border-left: 4px solid #f39c12;
-                text-align: center;
-            }
-            .credentials-note strong {
-                color: #856404;
-                display: block;
-                margin-bottom: 10px;
-            }
-            .credential-item {
-                font-family: monospace;
-                background: #f8f9fa;
-                padding: 4px 8px;
-                border-radius: 3px;
-                margin: 2px;
-                display: inline-block;
-                font-weight: bold;
-            }
-            input[type="text"], input[type="password"] { 
-                width: 100%; 
-                padding: 12px; 
-                margin: 10px 0; 
-                border: 1px solid #ddd; 
-                border-radius: 4px;
-                box-sizing: border-box;
-            }
-            input[type="submit"] { 
-                width: 100%; 
-                background-color: #4CAF50; 
-                color: white; 
-                padding: 12px; 
-                border: none; 
-                border-radius: 4px; 
-                cursor: pointer; 
-                font-size: 16px;
-            }
-            input[type="submit"]:hover { 
-                background-color: #45a049; 
-            }
-        </style>
-    </head>
-    <body>
-        <div class="login-form">
-            <h1>🔐 Secure Login</h1>
-            
-            <div class="credentials-note">
-                <strong>🔑 Demo Credentials</strong>
-                Username: <span class="credential-item">admin</span><br>
-                Password: <span class="credential-item">secure_password_123</span>
-            </div>
-            
-            <form method="post">
-                <label>Username:</label>
-                <input type="text" name="username" required>
-                <label>Password:</label>
-                <input type="password" name="password" required>
-                <input type="submit" value="Login">
-            </form>
-        </div>
-    </body>
-    </html>
-    '''
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
@@ -164,126 +74,16 @@ def logout():
 def index():
     username = session.get('username', 'User')
     
-    return f'''
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>🔒 Secure File Upload System</title>
-        <style>
-            body {{ 
-                font-family: Arial, sans-serif; 
-                max-width: 700px; 
-                margin: 30px auto; 
-                padding: 20px; 
-            }}
-            .header {{ 
-                background: #f8f9fa; 
-                padding: 15px; 
-                border-radius: 5px; 
-                margin-bottom: 20px; 
-                display: flex; 
-                justify-content: space-between; 
-                align-items: center; 
-            }}
-            .upload-form {{ 
-                border: 2px dashed #28a745; 
-                padding: 20px; 
-                text-align: center; 
-                margin: 20px 0; 
-                border-radius: 5px; 
-            }}
-            input[type="file"] {{ 
-                margin: 10px 0; 
-                padding: 5px; 
-            }}
-            input[type="submit"] {{ 
-                background-color: #28a745; 
-                color: white; 
-                padding: 12px 25px; 
-                border: none; 
-                cursor: pointer; 
-                font-size: 16px; 
-                border-radius: 4px; 
-            }}
-            input[type="submit"]:hover {{ 
-                background-color: #218838; 
-            }}
-            .security-info {{ 
-                background: #d1ecf1; 
-                padding: 15px; 
-                border-radius: 5px; 
-                margin: 15px 0; 
-            }}
-            .logout-btn {{ 
-                background: #dc3545; 
-                color: white; 
-                padding: 8px 15px; 
-                text-decoration: none; 
-                border-radius: 4px; 
-            }}
-            .credentials-info {{
-                background: #fff3cd;
-                border: 1px solid #ffeaa7;
-                padding: 15px;
-                border-radius: 5px;
-                margin: 15px 0;
-                border-left: 4px solid #f39c12;
-            }}
-            .credentials-info strong {{
-                color: #856404;
-            }}
-            .credential-item {{
-                font-family: monospace;
-                background: #f8f9fa;
-                padding: 4px 8px;
-                border-radius: 3px;
-                margin: 2px;
-                display: inline-block;
-            }}
-        </style>
-    </head>
-    <body>
-        <div class="header">
-            <div>
-                <h1>🔒 Secure File Upload System</h1>
-                <small>Welcome, {username}!</small>
-            </div>
-            <a href="/logout" class="logout-btn">Logout</a>
-        </div>
-        
-        <div class="security-info">
-            <strong>🛡️ Security Features Active:</strong><br>
-            • Authentication required<br>
-            • File type validation ({', '.join(ALLOWED_EXTENSIONS)})<br>
-            • File size limit: {MAX_FILE_SIZE // (1024*1024)}MB<br>
-            • Path traversal protection<br>
-            • Filename sanitization
-        </div>
-        
-        <div class="upload-form">
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <p><strong>Select a secure file to upload:</strong></p>
-                <input type="file" name="file" required accept=".txt,.pdf,.png,.jpg,.jpeg,.gif,.docx">
-                <br><br>
-                <input type="submit" value="🔐 Upload Securely">
-            </form>
-        </div>
-        
-        <h2>📁 File Management:</h2>
-        <div style="border: 1px solid #ddd; padding: 15px; margin: 20px 0; border-radius: 5px;">
-            <p><a href="/list-files" style="color: #28a745; text-decoration: none; font-weight: bold;">📂 View Uploaded Files</a></p>
-        </div>
-        
-        <div class="security-info">
-            <strong>🔍 Security Improvements:</strong><br>
-            • All file access now requires authentication<br>
-            • Malicious file uploads are blocked<br>
-            • Path traversal attacks are prevented<br>
-            • Secure filename handling implemented
-        </div>
-    </body>
-    </html>
-    '''
+    # Prepare template variables
+    allowed_extensions = list(ALLOWED_EXTENSIONS)
+    max_file_size_mb = MAX_FILE_SIZE // (1024*1024)
+    file_accept_types = '.' + ',.'.join(ALLOWED_EXTENSIONS)
+    
+    return render_template('index.html',
+                         username=username,
+                         allowed_extensions=allowed_extensions,
+                         max_file_size_mb=max_file_size_mb,
+                         file_accept_types=file_accept_types)
 
 @app.route('/list-files')
 @login_required
@@ -291,49 +91,13 @@ def list_files():
     uploaded_files_dir = './uploaded_files'
     try:
         files = os.listdir(uploaded_files_dir)
-        file_list_html = ''
-        
-        if not files:
-            file_list_html = '<p>No files uploaded yet.</p>'
-        else:
-            for file in files:
-                file_list_html += f'''
-                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0; border-radius: 5px;">
-                    <strong>📄 {file}</strong><br>
-                    <a href="/files/{file}" style="color: #4CAF50; text-decoration: none; margin-right: 15px;">📥 Download</a>
-                    <a href="/view/{file}" style="color: #2196F3; text-decoration: none;">👁️ View Content</a>
-                </div>
-                '''
-        
-        return f'''
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Uploaded Files</title>
-            <style>
-                body {{ font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }}
-                a {{ text-decoration: none; }}
-                .back-link {{ color: #666; margin-bottom: 20px; display: block; }}
-            </style>
-        </head>
-        <body>
-            <a href="/" class="back-link">← Back to Upload</a>
-            <h1>📁 Uploaded Files</h1>
-            {file_list_html}
-        </body>
-        </html>
-        '''
+        return render_template('list_files.html', files=files)
     except FileNotFoundError:
-        return '''
-        <!DOCTYPE html>
-        <html>
-        <head><title>Error</title></head>
-        <body>
-            <h1>Error: Upload directory not found!</h1>
-            <a href="/">← Back to Upload</a>
-        </body>
-        </html>
-        '''
+        return render_template('error.html',
+                             error_title='Error: Upload directory not found!',
+                             error_message='The upload directory could not be found.',
+                             back_url='/',
+                             back_text='Back to Upload')
 
 @app.route('/upload', methods=['POST'])
 @login_required
@@ -411,49 +175,15 @@ def view_file_content(filename):
             with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
                 content = f.read()
             
-            return f'''
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>View: {filename}</title>
-                <style>
-                    body {{ font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }}
-                    .content {{ background: #f5f5f5; padding: 20px; border-radius: 5px; white-space: pre-wrap; }}
-                    .back-link {{ color: #666; margin-bottom: 20px; display: block; }}
-                </style>
-            </head>
-            <body>
-                <a href="/list-files" class="back-link">← Back to Files</a>
-                <h1>📄 {filename}</h1>
-                <div class="content">{content}</div>
-            </body>
-            </html>
-            '''
+            return render_template('view_file.html', filename=filename, content=content)
         else:
-            return f'''
-            <!DOCTYPE html>
-            <html>
-            <head><title>Cannot View File</title></head>
-            <body>
-                <h1>Cannot view this file type</h1>
-                <p>File: {filename}</p>
-                <p>Only .txt files can be viewed directly.</p>
-                <a href="/list-files">← Back to Files</a>
-            </body>
-            </html>
-            '''
+            return render_template('cannot_view_file.html', filename=filename)
     except Exception as e:
-        return f'''
-        <!DOCTYPE html>
-        <html>
-        <head><title>Error</title></head>
-        <body>
-            <h1>Error reading file</h1>
-            <p>Could not read {filename}</p>
-            <a href="/list-files">← Back to Files</a>
-        </body>
-        </html>
-        '''
+        return render_template('error.html',
+                             error_title='Error reading file',
+                             error_message=f'Could not read {filename}',
+                             back_url='/list-files',
+                             back_text='Back to Files')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
